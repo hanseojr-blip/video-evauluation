@@ -1,0 +1,1132 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>동료평가 & 조별평가 - D반/G반</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Malgun Gothic', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 14px;
+            opacity: 0.95;
+        }
+        
+        .section-header {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            margin-top: 30px;
+        }
+        
+        .section-header h2 {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+        
+        .section-header p {
+            font-size: 13px;
+            opacity: 0.95;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 30px;
+        }
+        
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 15px;
+        }
+        
+        .form-group select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 14px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .radio-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .radio-option {
+            flex: 1;
+            min-width: 100px;
+        }
+        
+        .radio-option input[type="radio"] {
+            display: none;
+        }
+        
+        .radio-option label {
+            display: block;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: normal;
+        }
+        
+        .radio-option input[type="radio"]:checked + label {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+        
+        .radio-option label:hover {
+            border-color: #667eea;
+        }
+        
+        .member-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .member-section h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+        
+        .team-section {
+            background: #fff5f7;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            border-left: 4px solid #f093fb;
+        }
+        
+        .team-section h3 {
+            color: #f5576c;
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+        
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 20px;
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+        
+        .submit-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .alert {
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: none;
+        }
+        
+        .alert.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .alert.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .helper-text {
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .divider {
+            height: 30px;
+            background: linear-gradient(90deg, #667eea 0%, #f093fb 100%);
+        }
+        
+        .progress-indicator {
+            text-align: center;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .progress-indicator span {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            line-height: 40px;
+            border-radius: 50%;
+            background: #e0e0e0;
+            margin: 0 10px;
+            font-weight: bold;
+        }
+        
+        .progress-indicator span.active {
+            background: #667eea;
+            color: white;
+        }
+        
+        .progress-indicator span.completed {
+            background: #28a745;
+            color: white;
+        }
+        
+        .class-selector {
+            background: #e3f2fd;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            border: 2px solid #2196f3;
+        }
+        
+        .class-selector h3 {
+            color: #1976d2;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .class-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+        
+        .class-btn {
+            flex: 1;
+            max-width: 200px;
+            padding: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            border: 3px solid #2196f3;
+            background: white;
+            color: #1976d2;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .class-btn:hover {
+            background: #2196f3;
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(33, 150, 243, 0.3);
+        }
+        
+        .class-btn.selected {
+            background: #2196f3;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📝 통합 평가표 - D반/G반</h1>
+            <p>분반을 선택하고 동료평가와 조별평가를 순서대로 진행해주세요<br>선생님만 확인할 수 있습니다</p>
+        </div>
+        
+        <div class="content">
+            <!-- 분반 선택 -->
+            <div class="class-selector">
+                <h3>🏫 분반을 선택하세요</h3>
+                <div class="class-buttons">
+                    <button type="button" class="class-btn" onclick="selectClass('D')">D반</button>
+                    <button type="button" class="class-btn" onclick="selectClass('G')">G반</button>
+                </div>
+            </div>
+            
+            <div class="progress-indicator">
+                <span id="step1" class="active">1</span>
+                <span id="step2">2</span>
+                <p style="margin-top: 10px; color: #666;">
+                    <strong id="stepText">1단계: 동료평가</strong>
+                </p>
+            </div>
+            
+            <div id="alertBox" class="alert"></div>
+            
+            <form id="combinedForm">
+                <!-- 평가자 선택 (공통) -->
+                <div class="form-group">
+                    <label for="evaluator">📝 내 이름을 선택하세요 *</label>
+                    <select id="evaluator" required>
+                        <option value="">-- 먼저 분반을 선택하세요 --</option>
+                    </select>
+                    <p class="helper-text">본인을 선택하면 평가 항목이 나타납니다</p>
+                </div>
+                
+                <!-- ========== 1단계: 동료평가 ========== -->
+                <div id="peerSection" class="hidden">
+                    <div class="section-header">
+                        <h2>🤝 1단계: 동료평가</h2>
+                        <p>모둠원들을 평가해주세요</p>
+                    </div>
+                    
+                    <div class="content">
+                        <!-- 모둠원 1 -->
+                        <div class="member-section">
+                            <h3>👤 모둠원 1</h3>
+                            <div class="form-group">
+                                <label for="member1">모둠원 선택 *</label>
+                                <select id="member1" required>
+                                    <option value="">-- 선택 --</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>참여도 (만점 4점) *</label>
+                                <div class="radio-group">
+                                    <div class="radio-option">
+                                        <input type="radio" id="m1_part_4" name="member1_participation" value="4" required>
+                                        <label for="m1_part_4">4점<br><small>매우 적극적</small></label>
+                                    </div>
+                                    <div class="radio-option">
+                                        <input type="radio" id="m1_part_3" name="member1_participation" value="3">
+                                        <label for="m1_part_3">3점<br><small>적극적</small></label>
+                                    </div>
+                                    <div class="radio-option">
+                                        <input type="radio" id="m1_part_2" name="member1_participation" value="2">
+                                        <label for="m1_part_2">2점<br><small>보통</small></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>역할수행 (만점 4점) *</label>
+                                <div class="radio-group">
+                                    <div class="radio-option">
+                                        <input type="radio" id="m1_role_4" name="member1_role" value="4" required>
+                                        <label for="m1_role_4">4점<br><small>매우 우수</small></label>
+                                    </div>
+                                    <div class="radio-option">
+                                        <input type="radio" id="m1_role_3" name="member1_role" value="3">
+                                        <label for="m1_role_3">3점<br><small>우수</small></label>
+                                    </div>
+                                    <div class="radio-option">
+                                        <input type="radio" id="m1_role_2" name="member1_role" value="2">
+                                        <label for="m1_role_2">2점<br><small>보통</small></label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 모둠원 2 -->
+                        <div class="member-section">
+                            <h3>👤 모둠원 2</h3>
+                            <div class="form-group">
+                                <label for="member2">모둠원 선택 *</label>
+                                <select id="member2" required>
+                                    <option value="">-- 선택 --</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>참여도 (만점 4점) *</label>
+                                <div class="radio-group">
+                                    <div class="radio-option">
+                                        <input type="radio" id="m2_part_4" name="member2_participation" value="4" required>
+                                        <label for="m2_part_4">4점<br><small>매우 적극적</small></label>
+                                    </div>
+                                    <div class="radio-option">
+                                        <input type="radio" id="m2_part_3" name="member2_participation" value="3">
+                                        <label for="m2_part_3">3점<br><small>적극적</small></label>
+                                    </div>
+                                    <div class="radio-option">
+                                        <input type="radio" id="m2_part_2" name="member2_participation" value="2">
+                                        <label for="m2_part_2">2점<br><small>보통</small></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>역할수행 (만점 4점) *</label>
+                                <div class="radio-group">
+                                    <div class="radio-option">
+                                        <input type="radio" id="m2_role_4" name="member2_role" value="4" required>
+                                        <label for="m2_role_4">4점<br><small>매우 우수</small></label>
+                                    </div>
+                                    <div class="radio-option">
+                                        <input type="radio" id="m2_role_3" name="member2_role" value="3">
+                                        <label for="m2_role_3">3점<br><small>우수</small></label>
+                                    </div>
+                                    <div class="radio-option">
+                                        <input type="radio" id="m2_role_2" name="member2_role" value="2">
+                                        <label for="m2_role_2">2점<br><small>보통</small></label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 모둠원 3 -->
+                        <div class="member-section">
+                            <h3>👤 모둠원 3</h3>
+                            <div class="form-group">
+                                <label for="member3">모둠원 선택 *</label>
+                                <select id="member3" required>
+                                    <option value="">-- 선택 --</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>참여도 (만점 4점) *</label>
+                                <div class="radio-group">
+                                    <div class="radio-option">
+                                        <input type="radio" id="m3_part_4" name="member3_participation" value="4" required>
+                                        <label for="m3_part_4">4점<br><small>매우 적극적</small></label>
+                                    </div>
+                                    <div class="radio-option">
+                                        <input type="radio" id="m3_part_3" name="member3_participation" value="3">
+                                        <label for="m3_part_3">3점<br><small>적극적</small></label>
+                                    </div>
+                                    <div class="radio-option">
+                                        <input type="radio" id="m3_part_2" name="member3_participation" value="2">
+                                        <label for="m3_part_2">2점<br><small>보통</small></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>역할수행 (만점 4점) *</label>
+                                <div class="radio-group">
+                                    <div class="radio-option">
+                                        <input type="radio" id="m3_role_4" name="member3_role" value="4" required>
+                                        <label for="m3_role_4">4점<br><small>매우 우수</small></label>
+                                    </div>
+                                    <div class="radio-option">
+                                        <input type="radio" id="m3_role_3" name="member3_role" value="3">
+                                        <label for="m3_role_3">3점<br><small>우수</small></label>
+                                    </div>
+                                    <div class="radio-option">
+                                        <input type="radio" id="m3_role_2" name="member3_role" value="2">
+                                        <label for="m3_role_2">2점<br><small>보통</small></label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 모둠원 4 (5인 모둠만) -->
+                        <div id="member4Section" class="member-section hidden">
+                            <h3>👤 모둠원 4</h3>
+                            <div class="form-group">
+                                <label for="member4">모둠원 선택</label>
+                                <select id="member4">
+                                    <option value="">-- 선택 --</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>참여도 (만점 4점)</label>
+                                <div class="radio-group">
+                                    <div class="radio-option">
+                                        <input type="radio" id="m4_part_4" name="member4_participation" value="4">
+                                        <label for="m4_part_4">4점<br><small>매우 적극적</small></label>
+                                    </div>
+                                    <div class="radio-option">
+                                        <input type="radio" id="m4_part_3" name="member4_participation" value="3">
+                                        <label for="m4_part_3">3점<br><small>적극적</small></label>
+                                    </div>
+                                    <div class="radio-option">
+                                        <input type="radio" id="m4_part_2" name="member4_participation" value="2">
+                                        <label for="m4_part_2">2점<br><small>보통</small></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>역할수행 (만점 4점)</label>
+                                <div class="radio-group">
+                                    <div class="radio-option">
+                                        <input type="radio" id="m4_role_4" name="member4_role" value="4">
+                                        <label for="m4_role_4">4점<br><small>매우 우수</small></label>
+                                    </div>
+                                    <div class="radio-option">
+                                        <input type="radio" id="m4_role_3" name="member4_role" value="3">
+                                        <label for="m4_role_3">3점<br><small>우수</small></label>
+                                    </div>
+                                    <div class="radio-option">
+                                        <input type="radio" id="m4_role_2" name="member4_role" value="2">
+                                        <label for="m4_role_2">2점<br><small>보통</small></label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <button type="button" id="nextToTeam" class="submit-btn">다음: 조별평가 →</button>
+                    </div>
+                </div>
+                
+                <div class="divider hidden" id="divider"></div>
+                
+                <!-- ========== 2단계: 조별평가 ========== -->
+                <div id="teamSection" class="hidden">
+                    <div class="section-header">
+                        <h2>🎨 2단계: 조별평가</h2>
+                        <p>다른 조의 작품을 평가해주세요</p>
+                    </div>
+                    
+                    <div class="content">
+                        <!-- 평가할 조 1 -->
+                        <div class="team-section">
+                            <h3>🏆 평가할 조 1</h3>
+                            <div class="form-group">
+                                <label for="team1">조 선택 *</label>
+                                <select id="team1" required>
+                                    <option value="">-- 선택 --</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>작품의 완성도 (디자인) - 만점 3점 *</label>
+                                <div class="radio-group">
+                                    <div class="radio-option">
+                                        <input type="radio" id="t1_design_3" name="team1_design" value="3" required>
+                                        <label for="t1_design_3">3점<br><small>매우 우수</small></label>
+                                    </div>
+                                    <div class="radio-option">
+                                        <input type="radio" id="t1_design_2" name="team1_design" value="2">
+                                        <label for="t1_design_2">2점<br><small>보통</small></label>
+                                    </div>
+                                    <div class="radio-option">
+                                        <input type="radio" id="t1_design_1" name="team1_design" value="1">
+                                        <label for="t1_design_1">1점<br><small>미흡</small></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>작품 작동 - 만점 3점 *</label>
+                                <div class="radio-group">
+                                    <div class="radio-option">
+                                        <input type="radio" id="t1_function_3" name="team1_function" value="3" required>
+                                        <label for="t1_function_3">3점<br><small>매우 잘됨</small></label>
+                                    </div>
+                                    <div class="radio-option">
+                                        <input type="radio" id="t1_function_2" name="team1_function" value="2">
+                                        <label for="t1_function_2">2점<br><small>보통</small></label>
+                                    </div>
+                                    <div class="radio-option">
+                                        <input type="radio" id="t1_function_1" name="team1_function" value="1">
+                                        <label for="t1_function_1">1점<br><small>미흡</small></label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 평가할 조 2 -->
+                        <div class="team-section">
+                            <h3>🏆 평가할 조 2</h3>
+                            <div class="form-group">
+                                <label for="team2">조 선택 *</label>
+                                <select id="team2" required>
+                                    <option value="">-- 선택 --</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>작품의 완성도 (디자인) - 만점 3점 *</label>
+                                <div class="radio-group">
+                                    <div class="radio-option">
+                                        <input type="radio" id="t2_design_3" name="team2_design" value="3" required>
+                                        <label for="t2_design_3">3점<br><small>매우 우수</small></label>
+                                    </div>
+                                    <div class="radio-option">
+                                        <input type="radio" id="t2_design_2" name="team2_design" value="2">
+                                        <label for="t2_design_2">2점<br><small>보통</small></label>
+                                    </div>
+                                    <div class="radio-option">
+                                        <input type="radio" id="t2_design_1" name="team2_design" value="1">
+                                        <label for="t2_design_1">1점<br><small>미흡</small></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>작품 작동 - 만점 3점 *</label>
+                                <div class="radio-group">
+                                    <div class="radio-option">
+                                        <input type="radio" id="t2_function_3" name="team2_function" value="3" required>
+                                        <label for="t2_function_3">3점<br><small>매우 잘됨</small></label>
+                                    </div>
+                                    <div class="radio-option">
+                                        <input type="radio" id="t2_function_2" name="team2_function" value="2">
+                                        <label for="t2_function_2">2점<br><small>보통</small></label>
+                                    </div>
+                                    <div class="radio-option">
+                                        <input type="radio" id="t2_function_1" name="team2_function" value="1">
+                                        <label for="t2_function_1">1점<br><small>미흡</small></label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 평가할 조 3 -->
+                        <div class="team-section">
+                            <h3>🏆 평가할 조 3</h3>
+                            <div class="form-group">
+                                <label for="team3">조 선택 *</label>
+                                <select id="team3" required>
+                                    <option value="">-- 선택 --</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>작품의 완성도 (디자인) - 만점 3점 *</label>
+                                <div class="radio-group">
+                                    <div class="radio-option">
+                                        <input type="radio" id="t3_design_3" name="team3_design" value="3" required>
+                                        <label for="t3_design_3">3점<br><small>매우 우수</small></label>
+                                    </div>
+                                    <div class="radio-option">
+                                        <input type="radio" id="t3_design_2" name="team3_design" value="2">
+                                        <label for="t3_design_2">2점<br><small>보통</small></label>
+                                    </div>
+                                    <div class="radio-option">
+                                        <input type="radio" id="t3_design_1" name="team3_design" value="1">
+                                        <label for="t3_design_1">1점<br><small>미흡</small></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>작품 작동 - 만점 3점 *</label>
+                                <div class="radio-group">
+                                    <div class="radio-option">
+                                        <input type="radio" id="t3_function_3" name="team3_function" value="3" required>
+                                        <label for="t3_function_3">3점<br><small>매우 잘됨</small></label>
+                                    </div>
+                                    <div class="radio-option">
+                                        <input type="radio" id="t3_function_2" name="team3_function" value="2">
+                                        <label for="t3_function_2">2점<br><small>보통</small></label>
+                                    </div>
+                                    <div class="radio-option">
+                                        <input type="radio" id="t3_function_1" name="team3_function" value="1">
+                                        <label for="t3_function_1">1점<br><small>미흡</small></label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <button type="button" id="backToPeer" class="submit-btn" style="background: linear-gradient(135deg, #6c757d 0%, #495057 100%); margin-bottom: 10px;">← 이전: 동료평가</button>
+                        <button type="submit" class="submit-btn">✅ 최종 제출하기</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // ============================================
+        // 🔧 여기에 Apps Script URL을 입력하세요!
+        // ============================================
+        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz9J2FINuSfnsEx6gd3lKvPYzVYkPSBkA5aQxmgV05CrE8JTp8BDI0-5IsCN1BtOTbf/exec';
+        
+        // 학생 데이터
+        const studentsData = {
+            "D": {
+                "1조": [
+                    {id: "20219", name: "배준혁"},
+                    {id: "20224", name: "임상우"},
+                    {id: "20423", name: "정윤석"},
+                    {id: "20507", name: "박성빈"},
+                    {id: "20711", name: "이윤지"}
+                ],
+                "2조": [
+                    {id: "20109", name: "이유주"},
+                    {id: "20115", name: "고현민"},
+                    {id: "20204", name: "김정연"},
+                    {id: "20721", name: "박기현"}
+                ],
+                "3조": [
+                    {id: "20320", name: "박준표"},
+                    {id: "20511", name: "이가은"},
+                    {id: "20609", name: "이유정"},
+                    {id: "20817", name: "윤석민"}
+                ],
+                "4조": [
+                    {id: "20225", name: "정지후"},
+                    {id: "20325", name: "한승환"},
+                    {id: "20419", name: "이동진"},
+                    {id: "20701", name: "김륜희"}
+                ]
+            },
+            "G": {
+                "1조": [
+                    {id: "20209", name: "오가연"},
+                    {id: "20215", name: "김건우"},
+                    {id: "20314", name: "권민석"},
+                    {id: "20502", name: "곽인형"},
+                    {id: "20718", name: "김도훈"}
+                ],
+                "2조": [
+                    {id: "20119", name: "노신"},
+                    {id: "20415", name: "김민혁"},
+                    {id: "20418", name: "신재준"},
+                    {id: "20422", name: "정민호"},
+                    {id: "20722", name: "심재욱"}
+                ],
+                "3조": [
+                    {id: "20221", name: "안승우"},
+                    {id: "20325", name: "권형규"},
+                    {id: "20619", name: "박지담"},
+                    {id: "20624", name: "전서화"},
+                    {id: "20723", name: "양은찬"}
+                ],
+                "4조": [
+                    {id: "20222", name: "이재훈"},
+                    {id: "20425", name: "지예성"},
+                    {id: "20814", name: "김경록"},
+                    {id: "20823", name: "최지혁"}
+                ]
+            }
+        };
+
+        let currentClass = "";
+        let myTeam = "";
+        const allTeams = ["1조", "2조", "3조", "4조"];
+
+        // 분반 선택
+        function selectClass(className) {
+            currentClass = className;
+            
+            // 버튼 스타일 업데이트
+            document.querySelectorAll('.class-btn').forEach(btn => {
+                btn.classList.remove('selected');
+            });
+            event.target.classList.add('selected');
+            
+            // 평가자 선택 드롭다운 채우기
+            const evaluatorSelect = document.getElementById('evaluator');
+            evaluatorSelect.innerHTML = '<option value="">-- 이름 선택 --</option>';
+            
+            const teams = studentsData[className];
+            for (const [teamName, members] of Object.entries(teams)) {
+                members.forEach(member => {
+                    const option = document.createElement('option');
+                    option.value = `${teamName}|${member.id}`;
+                    option.textContent = `${member.id} ${member.name} (${teamName})`;
+                    evaluatorSelect.appendChild(option);
+                });
+            }
+            
+            showAlert(`${className}반이 선택되었습니다. 이름을 선택해주세요.`, 'success');
+        }
+
+        // 선택된 모둠원 업데이트 함수
+        function updateMemberDropdowns() {
+            const selected = [];
+            const selects = ['member1', 'member2', 'member3', 'member4'];
+            
+            // 현재 선택된 모둠원들 수집
+            selects.forEach(selectId => {
+                const value = document.getElementById(selectId).value;
+                if (value) selected.push(value);
+            });
+            
+            // 각 드롭다운 업데이트
+            selects.forEach(selectId => {
+                const select = document.getElementById(selectId);
+                const currentValue = select.value;
+                
+                // 옵션 다시 생성
+                select.innerHTML = '<option value="">-- 선택 --</option>';
+                
+                const [team, studentId] = document.getElementById('evaluator').value.split('|');
+                const teams = studentsData[currentClass];
+                const teamMembers = teams[team];
+                const otherMembers = teamMembers.filter(m => m.id !== studentId);
+                
+                otherMembers.forEach(member => {
+                    const option = document.createElement('option');
+                    option.value = member.id;
+                    option.textContent = `${member.id} ${member.name}`;
+                    
+                    // 이미 다른 드롭다운에서 선택되었고, 현재 선택값이 아니면 비활성화
+                    if (selected.includes(member.id) && member.id !== currentValue) {
+                        option.disabled = true;
+                        option.textContent += ' (이미 선택됨)';
+                        option.style.color = '#999';
+                    }
+                    
+                    select.appendChild(option);
+                });
+                
+                // 이전 선택값 복원
+                if (currentValue) {
+                    select.value = currentValue;
+                }
+            });
+        }
+
+        // 평가자 선택 시
+        document.getElementById('evaluator').addEventListener('change', function() {
+            const value = this.value;
+            if (!value) return;
+            
+            if (!currentClass) {
+                showAlert('먼저 분반을 선택해주세요!', 'error');
+                this.value = '';
+                return;
+            }
+            
+            const [team, studentId] = value.split('|');
+            myTeam = team;
+            const teams = studentsData[currentClass];
+            const teamMembers = teams[team];
+            
+            // 동료평가 섹션: 본인 제외한 모둠원들
+            const otherMembers = teamMembers.filter(m => m.id !== studentId);
+            
+            const selects = ['member1', 'member2', 'member3', 'member4'];
+            selects.forEach(selectId => {
+                const select = document.getElementById(selectId);
+                select.innerHTML = '<option value="">-- 선택 --</option>';
+                
+                otherMembers.forEach(member => {
+                    const option = document.createElement('option');
+                    option.value = member.id;
+                    option.textContent = `${member.id} ${member.name}`;
+                    select.appendChild(option);
+                });
+            });
+            
+            // 5인 모둠이면 모둠원 4 섹션 표시
+            const member4Section = document.getElementById('member4Section');
+            if (otherMembers.length === 4) {
+                member4Section.classList.remove('hidden');
+                document.getElementById('member4').required = true;
+                document.querySelectorAll('input[name="member4_participation"]').forEach(input => {
+                    input.required = true;
+                });
+                document.querySelectorAll('input[name="member4_role"]').forEach(input => {
+                    input.required = true;
+                });
+            } else {
+                member4Section.classList.add('hidden');
+                document.getElementById('member4').required = false;
+                document.querySelectorAll('input[name="member4_participation"]').forEach(input => {
+                    input.required = false;
+                });
+                document.querySelectorAll('input[name="member4_role"]').forEach(input => {
+                    input.required = false;
+                });
+            }
+            
+            // 모둠원 선택 시 다른 드롭다운 업데이트
+            ['member1', 'member2', 'member3', 'member4'].forEach(selectId => {
+                document.getElementById(selectId).addEventListener('change', updateMemberDropdowns);
+            });
+            
+            // 조별평가 섹션: 본인 조 제외한 다른 조들
+            const otherTeams = allTeams.filter(t => t !== team);
+            const teamSelects = ['team1', 'team2', 'team3'];
+            teamSelects.forEach(selectId => {
+                const select = document.getElementById(selectId);
+                select.innerHTML = '<option value="">-- 선택 --</option>';
+                
+                otherTeams.forEach(t => {
+                    const option = document.createElement('option');
+                    option.value = t;
+                    option.textContent = t;
+                    select.appendChild(option);
+                });
+            });
+            
+            // 조 선택 시 다른 드롭다운 업데이트
+            teamSelects.forEach(selectId => {
+                document.getElementById(selectId).addEventListener('change', updateTeamDropdowns);
+            });
+            
+            // 동료평가 섹션 표시
+            document.getElementById('peerSection').classList.remove('hidden');
+        });
+
+        // 선택된 조 업데이트 함수
+        function updateTeamDropdowns() {
+            const selectedTeams = [];
+            const teamSelects = ['team1', 'team2', 'team3'];
+            
+            // 현재 선택된 조들 수집
+            teamSelects.forEach(selectId => {
+                const value = document.getElementById(selectId).value;
+                if (value) selectedTeams.push(value);
+            });
+            
+            // 각 드롭다운 업데이트
+            teamSelects.forEach(selectId => {
+                const select = document.getElementById(selectId);
+                const currentValue = select.value;
+                
+                // 옵션 다시 생성
+                select.innerHTML = '<option value="">-- 선택 --</option>';
+                
+                const otherTeams = allTeams.filter(t => t !== myTeam);
+                
+                otherTeams.forEach(team => {
+                    const option = document.createElement('option');
+                    option.value = team;
+                    option.textContent = team;
+                    
+                    // 이미 다른 드롭다운에서 선택되었고, 현재 선택값이 아니면 비활성화
+                    if (selectedTeams.includes(team) && team !== currentValue) {
+                        option.disabled = true;
+                        option.textContent += ' (이미 선택됨)';
+                        option.style.color = '#999';
+                    }
+                    
+                    select.appendChild(option);
+                });
+                
+                // 이전 선택값 복원
+                if (currentValue) {
+                    select.value = currentValue;
+                }
+            });
+        }
+
+        // 다음 버튼: 동료평가 → 조별평가
+        document.getElementById('nextToTeam').addEventListener('click', function() {
+            // 동료평가 필수 항목 검증
+            const member1 = document.getElementById('member1').value;
+            const member2 = document.getElementById('member2').value;
+            const member3 = document.getElementById('member3').value;
+            
+            if (!member1 || !member2 || !member3) {
+                showAlert('모든 모둠원을 선택해주세요!', 'error');
+                return;
+            }
+            
+            // 참여도, 역할수행 점수 체크
+            for (let i = 1; i <= 3; i++) {
+                if (!document.querySelector(`input[name="member${i}_participation"]:checked`)) {
+                    showAlert(`모둠원 ${i}의 참여도를 선택해주세요!`, 'error');
+                    return;
+                }
+                if (!document.querySelector(`input[name="member${i}_role"]:checked`)) {
+                    showAlert(`모둠원 ${i}의 역할수행을 선택해주세요!`, 'error');
+                    return;
+                }
+            }
+            
+            const member4 = document.getElementById('member4').value;
+            if (member4) {
+                if (!document.querySelector('input[name="member4_participation"]:checked')) {
+                    showAlert('모둠원 4의 참여도를 선택해주세요!', 'error');
+                    return;
+                }
+                if (!document.querySelector('input[name="member4_role"]:checked')) {
+                    showAlert('모둠원 4의 역할수행을 선택해주세요!', 'error');
+                    return;
+                }
+            }
+            
+            // 조별평가 섹션 표시
+            document.getElementById('divider').classList.remove('hidden');
+            document.getElementById('teamSection').classList.remove('hidden');
+            document.getElementById('step1').classList.add('completed');
+            document.getElementById('step1').classList.remove('active');
+            document.getElementById('step2').classList.add('active');
+            document.getElementById('stepText').textContent = '2단계: 조별평가';
+            
+            // 스크롤
+            document.getElementById('teamSection').scrollIntoView({ behavior: 'smooth' });
+        });
+
+        // 이전 버튼: 조별평가 → 동료평가
+        document.getElementById('backToPeer').addEventListener('click', function() {
+            document.getElementById('step1').classList.remove('completed');
+            document.getElementById('step1').classList.add('active');
+            document.getElementById('step2').classList.remove('active');
+            document.getElementById('stepText').textContent = '1단계: 동료평가';
+            
+            document.getElementById('peerSection').scrollIntoView({ behavior: 'smooth' });
+        });
+
+        // 최종 제출
+        document.getElementById('combinedForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // 조별평가 필수 항목 체크
+            const team1 = document.getElementById('team1').value;
+            const team2 = document.getElementById('team2').value;
+            const team3 = document.getElementById('team3').value;
+            
+            if (!team1 || !team2 || !team3) {
+                showAlert('모든 조를 선택해주세요!', 'error');
+                return;
+            }
+            
+            // 데이터 수집
+            const formData = {
+                class: currentClass,
+                evaluator: document.getElementById('evaluator').options[document.getElementById('evaluator').selectedIndex].text,
+                timestamp: new Date().toISOString(),
+                peerEvaluation: {
+                    members: [
+                        {
+                            name: document.getElementById('member1').options[document.getElementById('member1').selectedIndex].text,
+                            participation: document.querySelector('input[name="member1_participation"]:checked').value,
+                            role: document.querySelector('input[name="member1_role"]:checked').value
+                        },
+                        {
+                            name: document.getElementById('member2').options[document.getElementById('member2').selectedIndex].text,
+                            participation: document.querySelector('input[name="member2_participation"]:checked').value,
+                            role: document.querySelector('input[name="member2_role"]:checked').value
+                        },
+                        {
+                            name: document.getElementById('member3').options[document.getElementById('member3').selectedIndex].text,
+                            participation: document.querySelector('input[name="member3_participation"]:checked').value,
+                            role: document.querySelector('input[name="member3_role"]:checked').value
+                        }
+                    ]
+                },
+                teamEvaluation: {
+                    teams: [
+                        {
+                            name: team1,
+                            design: document.querySelector('input[name="team1_design"]:checked').value,
+                            function: document.querySelector('input[name="team1_function"]:checked').value
+                        },
+                        {
+                            name: team2,
+                            design: document.querySelector('input[name="team2_design"]:checked').value,
+                            function: document.querySelector('input[name="team2_function"]:checked').value
+                        },
+                        {
+                            name: team3,
+                            design: document.querySelector('input[name="team3_design"]:checked').value,
+                            function: document.querySelector('input[name="team3_function"]:checked').value
+                        }
+                    ]
+                }
+            };
+            
+            // 모둠원 4 있으면 추가
+            const member4 = document.getElementById('member4').value;
+            if (member4) {
+                formData.peerEvaluation.members.push({
+                    name: document.getElementById('member4').options[document.getElementById('member4').selectedIndex].text,
+                    participation: document.querySelector('input[name="member4_participation"]:checked').value,
+                    role: document.querySelector('input[name="member4_role"]:checked').value
+                });
+            }
+            
+            console.log('제출된 평가:', formData);
+            
+            // Google Sheets로 전송 (옵션)
+            if (APPS_SCRIPT_URL !== 'https://script.google.com/macros/s/AKfycbxsplAfjm0DPnkkBw2CM-N544tdoU-SGmDQm5uyJSFIdYxgFB7ueYrfzjAm2WXG4Z_3/exec') {
+                fetch(APPS_SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData)
+                })
+                .then(() => {
+                    showAlert('모든 평가가 제출되었습니다! 감사합니다. 😊', 'success');
+                    resetForm();
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    showAlert('제출되었습니다! (오프라인 모드)', 'success');
+                    resetForm();
+                });
+            } else {
+                showAlert('모든 평가가 제출되었습니다! 감사합니다. 😊', 'success');
+                resetForm();
+            }
+        });
+
+        function resetForm() {
+            setTimeout(() => {
+                document.getElementById('combinedForm').reset();
+                document.getElementById('peerSection').classList.add('hidden');
+                document.getElementById('teamSection').classList.add('hidden');
+                document.getElementById('divider').classList.add('hidden');
+                document.getElementById('step1').classList.remove('completed');
+                document.getElementById('step1').classList.add('active');
+                document.getElementById('step2').classList.remove('active');
+                document.getElementById('stepText').textContent = '1단계: 동료평가';
+                document.querySelectorAll('.class-btn').forEach(btn => {
+                    btn.classList.remove('selected');
+                });
+                currentClass = "";
+                myTeam = "";
+                window.scrollTo(0, 0);
+            }, 3000);
+        }
+
+        function showAlert(message, type) {
+            const alertBox = document.getElementById('alertBox');
+            alertBox.textContent = message;
+            alertBox.className = `alert ${type}`;
+            alertBox.style.display = 'block';
+            
+            setTimeout(() => {
+                alertBox.style.display = 'none';
+            }, 5000);
+        }
+    </script>
+</body>
+</html>
